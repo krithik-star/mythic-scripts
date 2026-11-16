@@ -4,9 +4,9 @@
  */
 
 // YouTube Live Subscriber Count Configuration
-// Replace apiKey with your free Google YouTube Data API v3 key for 24/7 live sync
+// Paste your free Google YouTube Data API v3 key between the quotes below for 24/7 automatic sync
 const YOUTUBE_CONFIG = {
-  apiKey: '', // Optional: Paste your YouTube Data API v3 key here
+  apiKey: '', // <-- (Optional) Paste your YouTube Data API v3 key here (starts with AIzaSy...)
   channels: {
     krithik: {
       channelId: 'UC06JLRNZpgZygs-5vpynW2Q',
@@ -18,7 +18,7 @@ const YOUTUBE_CONFIG = {
       channelId: 'UCGhTVUoHth5s1dhzBlgD8rw',
       handle: '@SacredLoreOfficial',
       elementId: 'subsSacredLore',
-      fallback: 22
+      fallback: 24
     }
   }
 };
@@ -42,6 +42,7 @@ function animateCounter(element, targetValue, duration = 1200) {
   function update(now) {
     const elapsed = now - startTime;
     const progress = Math.min(elapsed / duration, 1);
+    // Smooth ease-out curve
     const easeOut = 1 - Math.pow(1 - progress, 4);
     const current = Math.floor(easeOut * target);
     element.textContent = current.toLocaleString();
@@ -62,7 +63,8 @@ async function fetchLiveSubscribers() {
   animateCounter(document.getElementById(channels.krithik.elementId), channels.krithik.fallback);
   animateCounter(document.getElementById(channels.sacredLore.elementId), channels.sacredLore.fallback);
 
-  if (!apiKey || apiKey === 'YOUR_YOUTUBE_API_KEY_HERE') {
+  // If no API key is provided, stop here (fallback count is already displayed)
+  if (!apiKey || apiKey.trim() === '' || apiKey === 'YOUR_YOUTUBE_API_KEY_HERE') {
     return;
   }
 
